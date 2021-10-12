@@ -11,29 +11,46 @@
                 <small class="float-end">Last updated {{album.uploaded_date|timesince}} ago</small>
             </div>
         </div>
-        
     </div>
-     
-         <div class="col">
-        <h5>Write your comment</h5>
-        <form class="form" method="post">
-            <div class="mb-3">
-                <textarea class="form-control" name="comment" id="comment"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        </col>
 </div>
 
 <div class="row row-cols-12 row-cols-md-12 g-12 mb-5">
-        <div class="col">
-        <h5>Write your comment</h5>
-        <form class="form" method="post">
-            <div class="mb-3">
-                <textarea class="form-control" name="comment" id="comment"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        <div class="col mb-5">
+            <h5>Write your comment</h5>
+            <form class="form" method="post">{% csrf_token %}
+                <div class="mb-3">
+                    <textarea class="form-control" name="feedback" id="feedback"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </col>
+        <br/>
+        {% for comment in commentList %}    
+        <div class="col">
+        
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                   <div class="col-2">
+                   <img src="https://ui-avatars.com/api/?name={{comment.user}}&rounded=true"/>
+                    <p class="fw-bold">{{comment.user|title}}</p>
+                   </div>
+                   <div class="col-9">
+                    <span>{{comment.feedback}}</span>
+                   
+                   </div>
+                    </div>
+                    
+                </div>
+                <div class="card-footer">
+                 <p class="text-muted fs-7">Commented on {{comment.published_date|timesince}} ago</p>
+                </div>
+            </div
+         
+            
+        </col>
+        {% endfor %}
 </div>
+
+ 
 {%endblock%}
