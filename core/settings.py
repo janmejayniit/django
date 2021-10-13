@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'album'
+    'album',
+    'authuser',
 ]
-
+AUTH_USER_MODEL = 'authuser.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -121,11 +122,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIFILES = [
-#     BASE_DIR / 'static/'
-# ]
-MEDIA_ROOT= BASE_DIR / 'static/'
-MEDIA_URL="/media/"
+MEDIA_URL = '/images/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+MEDIA_ROOT = BASE_DIR / 'static/images'
+
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">Upload Album</div>
+            <div class="card-body">
+                <form method="post" enctype='multipart/form-data'>{% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group mb-2">
+                            {% comment %} <label for="">{{field.label}}</label> {% endcomment %}
+                            {{field}}
+                        </div>
+                    {% endfor %}
+                    <div class="float-none">
+                        <button type="submit" class="btn btn-dark btn-block">Upload Image</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <h3>Album List</h3>
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th>S.N</th>
+                    <th>Image</th>
+                    <th>Upload Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for album in albumList %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>
+                        <a href="{% url 'albumDetails' album.id %}" target="_blank"><img src="{% static 'images/'%}{{album.image}}" width="150"/></a>
+                    </td>
+                    <td>{{album.uploaded_date}}</td>
+                    <td>
+                        <a href="{% url 'deleteAlbum' album.id %}" class="btn btn-dark">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock  %}
