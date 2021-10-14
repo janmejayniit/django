@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
-from .models import Album, Comment
+from .models import Album, Comment, AlbumLikeDislike
 from .form import AlbumForm
 
 # Create your views here.
@@ -22,7 +22,11 @@ def albumDetails(request, pk):
         comment = Comment.objects.create(album=album, user=request.user ,feedback=feedback)
         return redirect(albumDetails,pk)
     commentList = Comment.objects.filter(album=pk).order_by('-id')
-    context = {'album':album,'commentList':commentList}
+    likes = AlbumLikeDislike.objects.filter(album=album, like=True).values_list('user', flat=True)
+    dislikes = AlbumLikeDislike.objects.filter(album=album, dislike=True).values_list('user', flat=True)
+
+
+    context = {'album':album,'commentList':commentList,'likes':likes, 'dislikes':dislikes}
     return render(request, 'album/single-album.html',context)
 
 
@@ -49,3 +53,20 @@ def deleteAlbum(request, pk):
         return redirect('createAlbum')
     else:
         return render(request, 'album/delete-album.html',{'album':album})
+
+def albumLike(request, pk):
+    album = Album.objects.get(pk=pk)
+    user = request.user
+    if album:
+        obj = AlbumLikeDislike(album=album,user=user,like=True)
+        obj.save()
+
+    return redirect(albumDetails,pk)
+
+def albumDisLike(request, pk):
+    album = Album.objects.get(pk=pk)
+    user = request.user
+    if album:
+        obj = AlbumLikeDislike(album=album,user=user,dislike=True)
+        obj.save()
+    return redirect(albumDetails,pk)

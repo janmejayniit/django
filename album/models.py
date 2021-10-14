@@ -24,7 +24,6 @@ class Album(models.Model):
     image = models.ImageField(upload_to='gallery/')
     uploaded_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    
 
 class Winner(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
@@ -38,6 +37,16 @@ class Comment(models.Model):
     feedback = models.CharField(max_length=500)
     is_published = models.BooleanField(default=False)
     published_date = models.DateField(auto_now_add=True)
+    
+class AlbumLikeDislike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    like = models.BooleanField(default=False)
+    dislike = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'album')
     
 
 

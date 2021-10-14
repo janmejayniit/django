@@ -11,10 +11,18 @@
                 <small class="float-end">Last updated {{album.uploaded_date|timesince}} ago</small>
             </div>
         </div>
-        <p>
-            <a href="">Like</a>
-            <a href="">Dislike</a>
-        </p>
+        
+        <div class="mt-2 float-end">
+            {% if request.user.id in likes %}
+                <button type="button" class="btn btn-primary btn-sm">Like <span class="badge bg-secondary">{{likes|length}} </span></button>
+                <button type="button" class="btn btn-danger btn-sm">DisLike <span class="badge bg-secondary">{{dislikes|length}} </span></button>
+            {% else %}
+                <form method="post" class="form-inline">{% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm" formaction="{% url 'albumLike' album.id %}">Like <span class="badge bg-secondary">{{likes|length}} </span></button>
+                    <button type="submit" class="btn btn-danger btn-sm" formaction="{% url 'albumDisLike' album.id %}">DisLike <span class="badge bg-secondary">{{dislikes|length}} </span></button>
+                </form>
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -35,7 +43,7 @@
                     <span class="commenter-name">
                     <form class="form" method="post">{% csrf_token %}
                         <input type="text" placeholder="Add a public comment" name="feedback" >
-                        <button type="submit" class="btn btn-default">Comment</button>
+                        <button type="submit" class="btn btn-dark">Comment</button>
                         <button type="cancel" class="btn btn-default">Cancel</button>
                     </form>
                     </span>
