@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.query import QuerySet
 # from django.contrib.auth.models import User
 from authuser.models import User
 # Create your models here.
@@ -40,7 +41,7 @@ class Comment(models.Model):
     
 class AlbumLikeDislike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, related_name="likedislikes", related_query_name='likedislike', on_delete=models.CASCADE)
     like = models.BooleanField(default=False)
     dislike = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

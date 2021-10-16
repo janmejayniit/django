@@ -4,15 +4,15 @@
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for album in page_obj  %}
         <div class="col">
-        <div class="card h-100">
-            <a href="{% url 'albumDetails' album.id %}" class="">
-                <img src="/images/{{album.image }}" class="card-img-top">
-            </a>
-            <div class="card-footer">
-            <small class="fw-bold">{{album.user|title}}</small>
-            <small class="float-end">Last updated {{album.uploaded_date|timesince}} ago</small>
+            <div class="card h-100">
+                <a href="{% url 'albumDetails' album.id %}" class="">
+                    <img src="/images/{{album.image }}" class="card-img-top">
+                </a>
+                <div class="card-footer">
+                <small class="fw-bold">{{album.user|title}}</small>
+                <small class="float-end">Last updated {{album.uploaded_date|timesince}} ago</small>
+                </div>
             </div>
-        </div>
         </div>
     {% endfor %}
     <div class="pagination">

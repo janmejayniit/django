@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
+from .models import Followers, User
+from album.models import Album
 
 from authuser.form import MyUserCreationForm
 
@@ -47,5 +49,21 @@ def register_view(request):
         return render(request, 'auth/register.html', {'form': form})
 
 
-def userProfile(request):
-    return render(request, 'user.html')
+def userProfile(request, username):
+    user = User.objects.get(username=username)
+    albumList = Album.objects.filter(user=user).order_by('-id')
+    totalFollower = Followers.objects.filter(user=user).count()
+    followersList = Followers.objects.filter(user=user).values_list('follow_user',flat=True)
+    context = {'user':user, 'albumList':albumList,'totalFollower':totalFollower,'followersList':followersList}
+    return render(request, 'user.html', context)
+
+
+def folloUser(request, username):
+
+    if request.method=='POST':
+        user = User.objects.get(username=username)
+        obj=Followers.objects.create(user=user, follow_user=request.user)
+        return redirect('userProfile', username)
+
+
+
