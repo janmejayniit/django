@@ -2,6 +2,10 @@ from django.db import models
 from django.db.models.query import QuerySet
 # from django.contrib.auth.models import User
 from authuser.models import User
+from django.utils.html import mark_safe
+from django.db.models.signals import post_save
+
+
 # Create your models here.
 
 class Contest(models.Model):
@@ -25,6 +29,12 @@ class Album(models.Model):
     image = models.ImageField(upload_to='gallery/')
     uploaded_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+
+    def image_tag(self):
+        return mark_safe('<a href="/images/%s" target="_blank"><img src="/images/%s" width="250" height="150" /></a>' % (self.image,self.image))
+    image_tag.short_description = 'Image'
+
+
 
 class Winner(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
@@ -52,3 +62,7 @@ class AlbumLikeDislike(models.Model):
 
 
 
+""" def albumCreate(sender, instance, **kwargs):
+    print("Album created")
+
+post_save.connect(albumCreate, sender=Album) """

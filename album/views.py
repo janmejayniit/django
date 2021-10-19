@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from .models import Album, Comment, AlbumLikeDislike
 from .form import AlbumForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
@@ -29,7 +30,7 @@ def albumDetails(request, pk):
     context = {'album':album,'commentList':commentList,'likes':likes, 'dislikes':dislikes}
     return render(request, 'album/single-album.html',context)
 
-
+@login_required(login_url='login_view')
 def createAlbum(request):
     if request.method=='POST':
         form = AlbumForm(request.POST, request.FILES)
@@ -44,7 +45,8 @@ def createAlbum(request):
         form = AlbumForm()
         albumList = Album.objects.filter(user=request.user).order_by('-id')
         return render(request, 'album/create-album.html',{'form':form,'albumList':albumList})
-
+       
+@login_required(login_url='login_view')
 def deleteAlbum(request, pk):
     album = Album.objects.get(pk=pk)
     if request.method=='POST':

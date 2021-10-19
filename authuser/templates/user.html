@@ -3,16 +3,20 @@
 {% block content %}
 <div class="row mb-5">
     <div class="col-md-4">
-        <div class="card"  >
-            <img class="card-img-top" src="{% static 'images/' %}{{user.avatar}}" alt="Card image" style="width:100%">
+        <div class="card" >
+            {% if user.avatar %}
+                <img class="card-img-top" src="{% static 'images/' %}{{user.avatar}}" alt="Card image" style="width:100%">
+            {% else %}
+                <img class="card-img-top" src="https://www.w3schools.com/bootstrap5/img_avatar1.png" alt="Card image" style="width:100%">
+            {% endif %}
+            
             <div class="card-body">
                 <div class="row">
                     <div class="col">
                         <h4 class="card-title">{{user.username|title}}</h4>
                     </div>
                     <div class="col" style="text-align: right;">
-                        
-                        {% if user.is_authenticated and user.id != request.user.id %} 
+                        {% if request.user.is_authenticated and user.id != request.user.id %} 
                             {% if request.user.id in followersList %}
                                 <span class="text-muted"><i class="fa fa-check-circle"></i> Followed</span>
                             {%else%}
@@ -23,8 +27,8 @@
                         {% endif %}    
                     </div>
                 </div>
-                <p class="card-text">{{user.bio}}</p>
-                <table class="table table-bordered">
+                <p class="card-text">{{user.bio|default_if_none:''}}</p>
+                <table class="table table-striped table-sm">
                     <tr>
                         <td>Full Name</td>
                         <td>{{user.first_name}} {{user.last_name}}</td>

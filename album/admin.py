@@ -17,6 +17,8 @@ class AlbumLikeDislikeAdmin(admin.ModelAdmin):
 
 @admin.register(Album)
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ['pk','user', 'image', 'is_active']
+    list_per_page=5
+    list_display = ['pk','user', 'image_tag', 'is_active']
+    list_filter = ('user', )
 
 
